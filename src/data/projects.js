@@ -1,0 +1,66 @@
+export const codingProjects = [
+  {
+    id: 'market-basket',
+    title: 'Market Basket Analysis System',
+    category: 'Data Science',
+    description: 'A decision-support application for discovering product associations in retail transactions.',
+    technologies: ['Python', 'Streamlit', 'Pandas'],
+    image: '/assets/projects/market-basket.png',
+    liveUrl: '',
+    sourceUrl: '',
+    featured: true,
+  },
+  {
+    id: 'mlimipay',
+    title: 'MlimiPay Web Experience',
+    category: 'Web Development',
+    description: 'A modern web experience focused on clear information, responsive layouts, and usability.',
+    technologies: ['Next.js', 'React', 'Tailwind CSS'],
+    image: '/assets/projects/mlimipay.png',
+    liveUrl: '',
+    sourceUrl: '',
+    featured: true,
+  },
+  {
+    id: 'trading-journal',
+    title: 'Trading Journal Concept',
+    category: 'Application',
+    description: 'A journal concept for recording trades, reviewing performance, and reflecting on process.',
+    technologies: ['React Native', 'Expo'],
+    image: '/assets/projects/trading-journal.png',
+    liveUrl: '',
+    sourceUrl: '',
+    featured: false,
+  },
+]
+
+export const designProjects = [
+  {
+    id: 'brand-identity',
+    title: 'Brand Identity',
+    category: 'Branding',
+    description: 'A visual identity project. Replace this card with your original artwork and project details.',
+    image: '/assets/designs/brand-identity.png',
+  },
+  {
+    id: 'event-poster',
+    title: 'Event Poster',
+    category: 'Posters',
+    description: 'A poster design showcase. Add the brief, design choices, and final deliverable.',
+    image: '/assets/designs/event-poster.png',
+  },
+  {
+    id: 'social-graphics',
+    title: 'Social Media Graphics',
+    category: 'Social Media',
+    description: 'A collection of social graphics. Replace this placeholder with your own work.',
+    image: '/assets/designs/social-graphics.png',
+  },
+  {
+    id: 'billboard',
+    title: 'Billboard Concept',
+    category: 'Advertising',
+    description: 'An advertising layout. Add a real design image and a short explanation.',
+    image: '/assets/designs/billboard.png',
+  },
+]
