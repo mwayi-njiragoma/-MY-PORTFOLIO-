@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar.jsx'
 import Hero from './sections/Hero.jsx'
+import ScrollingCsScene from './three/ScrollingCsScene.jsx'
 import About from './sections/About.jsx'
 import HorizontalProjects from './sections/HorizontalProjects.jsx'
 import CodingProjects from './sections/CodingProjects.jsx'
@@ -12,6 +13,7 @@ export default function App() {
     <>
       <div className="ambient ambient--one" />
       <div className="ambient ambient--two" />
+      <ScrollingCsScene />
       <Navbar />
       <main>
         <Hero />

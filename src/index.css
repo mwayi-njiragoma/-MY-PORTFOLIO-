@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
 
 :root {
   font-family: 'Manrope', sans-serif;
@@ -15,6 +15,8 @@
   --glass: rgba(255, 255, 255, 0.055);
   --glass-border: rgba(255, 255, 255, 0.15);
   --mono: 'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --script: 'Caveat', cursive;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 100px; }
@@ -51,8 +53,8 @@ button { color: inherit; }
 .eyebrow { font: 500 .67rem/1.6 var(--mono); letter-spacing: .12em; color: var(--grey); text-transform: uppercase; margin: 0 0 20px; }
 .eyebrow span { color: var(--silver); }
 h1, h2, h3, p { margin-top: 0; }
-.hero h1 { font-size: clamp(3rem, 6.6vw, 6.1rem); line-height: .99; letter-spacing: -.075em; font-weight: 600; margin: 0; }
-.hero h1 span, .section-heading h2 span { color: var(--grey); }
+.hero h1 { font-family: var(--display); font-size: clamp(3rem, 6.6vw, 6.1rem); line-height: .99; letter-spacing: -.075em; font-weight: 800; margin: 0; }
+.hero h1 span, .section-heading h2 span { font-family: var(--script); font-weight: 600; color: var(--grey); }
 .hero-description { max-width: 500px; color: var(--silver); line-height: 1.85; font-size: .96rem; margin: 28px 0 30px; }
 .hero-actions, .resume-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 14px; border: 1px solid transparent; border-radius: 999px; min-height: 48px; padding: 0 18px; font-size: .78rem; font-weight: 700; cursor: pointer; transition: transform .25s ease, background .25s ease, border-color .25s ease; }
@@ -73,7 +75,7 @@ h1, h2, h3, p { margin-top: 0; }
 .hero-index { position: absolute; bottom: 38px; right: 0; color: var(--grey); font: .6rem var(--mono); letter-spacing: .1em; }
 .section { padding-top: 140px; padding-bottom: 140px; }
 .section-heading { margin-bottom: 52px; }
-.section-heading h2, .horizontal-intro h2 { font-size: clamp(2.5rem, 5.2vw, 4.6rem); line-height: 1.04; letter-spacing: -.07em; font-weight: 600; margin: 0; }
+.section-heading h2, .horizontal-intro h2 { font-family: var(--display); font-size: clamp(2.5rem, 5.2vw, 4.6rem); line-height: 1.04; letter-spacing: -.07em; font-weight: 800; margin: 0; }
 .about-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(40px, 9vw, 130px); }
 .about-copy { color: var(--silver); line-height: 1.9; font-size: .9rem; }
 .lead { font-size: 1.22rem; color: var(--white); line-height: 1.55; letter-spacing: -.03em; }
