@@ -66,6 +66,9 @@ h1, h2, h3, p { margin-top: 0; }
 .button__icon { display: inline-flex; }
 .hero-meta { display: flex; gap: 25px; flex-wrap: wrap; margin-top: 54px; color: var(--grey); font: .59rem var(--mono); letter-spacing: .08em; }
 .hero-scene { height: min(600px, 70vh); min-height: 370px; position: relative; isolation: isolate; }
+.liquid-portrait { position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 320px; overflow: hidden; border-radius: 24px; background: transparent; }
+.hero .liquid-portrait { grid-column: 1 / -1; width: min(100%, 1080px); margin: 38px auto 0; }
+.liquid-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform, mask-image; transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateZ(0px); transform-origin: center center; mask-image: radial-gradient(circle, transparent 0%, transparent 100%); -webkit-mask-image: radial-gradient(circle, transparent 0%, transparent 100%); mask-composite: add; -webkit-mask-composite: source-over; }
 .hero-scene canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .scene-orbit { position: absolute; left: 50%; top: 50%; width: 76%; aspect-ratio: 1; border: 1px solid rgba(214,214,214,.15); border-radius: 50%; transform: translate(-50%,-50%) rotate(-25deg) scaleY(.42); pointer-events: none; }
 .scene-orbit--two { width: 96%; transform: translate(-50%,-50%) rotate(50deg) scaleY(.27); border-color: rgba(214,214,214,.1); }

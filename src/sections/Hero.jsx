@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
-import HeroScene from '../three/HeroScene.jsx'
+import LiquidPortrait from '../components/LiquidPortrait.jsx'
 
 export default function Hero() {
   return (
@@ -21,7 +21,7 @@ export default function Hero() {
         </motion.div>
         <div className="hero-meta"><span>BASED IN MALAWI</span><span>BUILDING WITH INTENTION</span></div>
       </div>
-      <HeroScene />
+      <LiquidPortrait />
       <a className="scroll-cue" href="#about"><span className="scroll-cue__icon"><ArrowDown size={15} /></span> Scroll to explore</a>
       <div className="hero-index">PORTFOLIO / 2026</div>
     </section>
