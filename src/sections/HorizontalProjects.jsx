@@ -22,7 +22,7 @@ export default function HorizontalProjects() {
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
+          start: 'bottom bottom',
           end: () => `+=${getDistance()}`,
           pin: true,
           scrub: 1,

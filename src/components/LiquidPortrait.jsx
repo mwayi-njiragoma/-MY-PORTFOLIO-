@@ -16,6 +16,10 @@ export default function LiquidPortrait() {
   })
   const idleSpawnRef = useRef(0)
   const frameRef = useRef(0)
+  const autoActiveRef = useRef(false)
+  const inViewRef = useRef(true)
+  const lastInteractionRef = useRef(performance.now())
+  const scrollTimerRef = useRef(0)
 
   useEffect(() => {
     const root = rootRef.current
@@ -71,6 +75,7 @@ export default function LiquidPortrait() {
       pointer.y = (event.clientY - rect.top) / rect.height
       pointer.active = true
       pointer.lastMove = performance.now()
+      lastInteractionRef.current = performance.now()
       pointer.prev = null
       spawnBlob(pointer.x, pointer.y, { maxR: 0.24, life: 1.4 })
     }
@@ -82,6 +87,7 @@ export default function LiquidPortrait() {
       pointer.y = (event.clientY - rect.top) / rect.height
       pointer.active = true
       pointer.lastMove = performance.now()
+      lastInteractionRef.current = performance.now()
       addPointerBlob(pointer.x, pointer.y)
     }
 
@@ -94,6 +100,28 @@ export default function LiquidPortrait() {
     root.addEventListener('pointerenter', onPointerEnter, { passive: true })
     root.addEventListener('pointermove', onPointerMove, { passive: true })
     root.addEventListener('pointerleave', onPointerLeave, { passive: true })
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inViewRef.current = entry.isIntersecting
+        if (!entry.isIntersecting) {
+          autoActiveRef.current = false
+        }
+      },
+      { threshold: 0.18 },
+    )
+    observer.observe(root)
+
+    const onWindowScroll = () => {
+      if (!inViewRef.current) return
+      autoActiveRef.current = true
+      lastInteractionRef.current = performance.now()
+      window.clearTimeout(scrollTimerRef.current)
+      scrollTimerRef.current = window.setTimeout(() => {
+        autoActiveRef.current = false
+      }, 1500)
+    }
+    window.addEventListener('scroll', onWindowScroll, { passive: true })
 
     const applyMask = () => {
       const pointer = pointerRef.current
@@ -122,7 +150,7 @@ export default function LiquidPortrait() {
         })
         .filter((blob) => blob.life > 0.01 && blob.radius > 0.004)
 
-      if (!pointer.active || blobsRef.current.length === 0) {
+      if ((!pointer.active && !autoActiveRef.current) || blobsRef.current.length === 0) {
         image.style.maskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
         image.style.webkitMaskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
         return
@@ -147,8 +175,9 @@ export default function LiquidPortrait() {
       const pointer = pointerRef.current
       const now = performance.now()
 
-      // Occasional ripple/droplet bursts while the cursor rests, exposing the portrait.
-      if (pointer.active && now - pointer.lastMove > 180) {
+      // Occasional ripple/droplet bursts while interacting or scrolling, exposing the portrait.
+      const hasInteraction = pointer.active || autoActiveRef.current
+      if (hasInteraction && now - lastInteractionRef.current > 180) {
         if (now - idleSpawnRef.current > 900 + Math.random() * 500) {
           const centerX = Math.random() * 0.76 + 0.12
           const centerY = Math.random() * 0.76 + 0.12
@@ -186,6 +215,9 @@ export default function LiquidPortrait() {
 
     return () => {
       cancelAnimationFrame(frameRef.current)
+      window.clearTimeout(scrollTimerRef.current)
+      observer.disconnect()
+      window.removeEventListener('scroll', onWindowScroll)
       root.removeEventListener('pointerenter', onPointerEnter)
       root.removeEventListener('pointermove', onPointerMove)
       root.removeEventListener('pointerleave', onPointerLeave)
