@@ -5,8 +5,7 @@ import GlassCard from '../components/GlassCard.jsx'
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState('')
-  const emailAddress = 'your.email@example.com' // Replace with your preferred public email.
-
+  const emailAddress = 'njiragomamwayi04@gmail.com' 
   function handleSubmit(event) {
     event.preventDefault()
     const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`)
@@ -38,10 +37,9 @@ export default function Contact() {
           <p>I'm interested in thoughtful collaborations across software, design and digital products.</p>
           <a className="contact-email" href={`mailto:${emailAddress}`}><Mail size={18} /> {emailAddress} <ArrowUpRight size={16} /></a>
           <div className="social-links">
-            <a href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub"><Github /></a>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin /></a>
+            <a href="https://github.com/mwayi-njiragoma" target="_blank" rel="noreferrer" aria-label="GitHub"><Github /></a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin /></a>
           </div>
-          <p className="small-note">Replace the email and social links with your real contact details before publishing.</p>
         </div>
       </div>
     </section>

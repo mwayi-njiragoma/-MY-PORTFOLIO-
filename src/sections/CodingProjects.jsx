@@ -22,7 +22,9 @@ export default function CodingProjects() {
         {visible.map(project => (
           <GlassCard className="project-card" key={project.id}>
             <div className="project-card__visual">
-              <div className="project-card__placeholder"><span>{project.title.split(' ').map(word => word[0]).slice(0, 3).join('')}</span></div>
+              <div className="project-card__placeholder">
+                <img src={project.image} alt={`${project.title} preview`} loading="lazy" />
+              </div>
               <span className="project-category">{project.category}</span>
             </div>
             <div className="project-card__body">
@@ -32,7 +34,6 @@ export default function CodingProjects() {
               <div className="project-links">
                 {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">Live demo <ArrowUpRight size={14} /></a>}
                 {project.sourceUrl && <a href={project.sourceUrl} target="_blank" rel="noreferrer"><span>GitHub</span> Source code</a>}
-                {!project.liveUrl && !project.sourceUrl && <span className="project-link-placeholder">Add demo / repository links</span>}
               </div>
             </div>
           </GlassCard>

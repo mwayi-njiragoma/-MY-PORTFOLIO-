@@ -52,8 +52,8 @@ export default function HorizontalProjects() {
         {codingProjects.filter(project => project.featured).map((project, index) => (
           <article className="horizontal-project glass-panel" key={project.id}>
             <div className={`project-art project-art--${index + 1}`}>
+              <img src={project.image} alt={`${project.title} preview`} loading="lazy" />
               <span className="project-art__index">0{index + 1} / FEATURED</span>
-              <span className="project-art__symbol">{index === 0 ? '⌘' : '◈'}</span>
               <span className="project-art__caption">SELECTED PROJECT</span>
             </div>
             <div className="horizontal-project__body">
@@ -61,7 +61,14 @@ export default function HorizontalProjects() {
               <h3>{project.title}</h3>
               <p>{project.description}</p>
               <div className="tag-list">{project.technologies.map(tag => <span key={tag}>{tag}</span>)}</div>
-              <a className="text-link" href="#development">Explore project <ArrowUpRight size={16} /></a>
+              <a
+                className="text-link"
+                href={project.liveUrl || project.sourceUrl || '#development'}
+                target={project.liveUrl || project.sourceUrl ? '_blank' : undefined}
+                rel={project.liveUrl || project.sourceUrl ? 'noreferrer' : undefined}
+              >
+                Explore project <ArrowUpRight size={16} />
+              </a>
             </div>
           </article>
         ))}

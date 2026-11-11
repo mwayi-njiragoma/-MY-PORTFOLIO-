@@ -2,6 +2,8 @@ import { motion } from 'motion/react'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import LiquidPortrait from '../components/LiquidPortrait.jsx'
 
+const CV_URL = `${import.meta.env.BASE_URL}cv.pdf`
+
 export default function Hero() {
   return (
     <section className="hero section-shell" id="home">
@@ -17,7 +19,7 @@ export default function Hero() {
         </motion.p>
         <motion.div className="hero-actions" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
           <a className="button button--primary" href="#selected-work">Explore my work <ArrowUpRight size={17} /></a>
-          <a className="button button--secondary" href="/cv.pdf" target="_blank" rel="noreferrer">View CV <ArrowUpRight size={17} /></a>
+          <a className="button button--secondary" href={CV_URL} target="_blank" rel="noreferrer">View CV <ArrowUpRight size={17} /></a>
         </motion.div>
         <div className="hero-meta"><span>BASED IN MALAWI</span><span>BUILDING WITH INTENTION</span></div>
       </div>

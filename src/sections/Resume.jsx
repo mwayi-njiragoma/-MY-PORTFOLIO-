@@ -1,6 +1,8 @@
 import { ArrowDownToLine, ArrowUpRight, FileText } from 'lucide-react'
 import AnimatedButton from '../components/AnimatedButton.jsx'
 
+const CV_URL = `${import.meta.env.BASE_URL}cv.pdf`
+
 export default function Resume() {
   return (
     <section className="section section-shell resume-section" id="resume">
@@ -13,10 +15,9 @@ export default function Resume() {
           <p className="lead">Want the full picture?</p>
           <p>My CV includes my education, skills, experience and selected work. Open it in your browser or download a copy for later.</p>
           <div className="resume-actions">
-            <AnimatedButton href="/cv.pdf" icon="up">View CV in browser</AnimatedButton>
-            <AnimatedButton href="/cv.pdf" variant="secondary" download icon="down">Download PDF</AnimatedButton>
+            <AnimatedButton href={CV_URL} icon="up">View CV in browser</AnimatedButton>
+            <AnimatedButton href={CV_URL} variant="secondary" download="Mwayi-Njiragoma-CV.pdf" icon="down">Download PDF</AnimatedButton>
           </div>
-          <p className="small-note">Add your actual PDF to <code>public/cv.pdf</code> before publishing.</p>
         </div>
         <div className="resume-card-wrap">
           <div className="resume-card glass-panel">

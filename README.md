@@ -21,19 +21,19 @@ npm run preview
 ```
 
 ## Personalise before publishing
-1. Update project content and URLs in `src/data/projects.js`.
-2. Replace concept tiles with your own project images.
-3. Add your real CV PDF at `public/cv.pdf`.
+1. Update project content, image paths, and URLs in `src/data/projects.js`.
+2. Add or replace project images in `public/assets/projects/` and design images in `public/assets/designs/`.
+3. Keep your CV at `public/cv.pdf`.
 4. Replace the email and social links in `src/sections/Contact.jsx`.
 5. Check that every project URL and contact method works.
 
 ## Image assets
-Create these folders and add your images:
+Project images are loaded from these folders:
 - `public/assets/projects/`
 - `public/assets/designs/`
 - `public/assets/profile/`
 
-The starter currently uses CSS concept artwork in several cards so the site remains presentable before you add images. Do not represent concept tiles as final client work.
+The project and design sections now render each project's `image` field. The CSS gradients remain as fallbacks when an image is missing.
 
 ## Deployment
 Import the repository into Vercel or Netlify and use:

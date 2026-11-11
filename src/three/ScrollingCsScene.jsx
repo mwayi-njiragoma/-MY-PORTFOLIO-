@@ -169,7 +169,11 @@ export default function ScrollingCsScene() {
         opacity: 0.72,
       }}
     >
-      <Canvas camera={{ position: [0, 0, 5.4], fov: 46 }} dpr={[1, 1.4]}>
+      <Canvas
+        camera={{ position: [0, 0, 5.4], fov: 46 }}
+        dpr={[1, 1.4]}
+        style={{ pointerEvents: 'none' }}
+      >
         <Scene />
       </Canvas>
     </div>
