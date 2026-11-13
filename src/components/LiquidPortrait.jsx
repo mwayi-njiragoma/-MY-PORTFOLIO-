@@ -28,10 +28,18 @@ export default function LiquidPortrait() {
 
     // Touch devices have no hover. They still get the liquid ripples, but a
     // permanent soft reveal keeps the portrait from ever fully vanishing.
-    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches
-    const touchBaseline =
-      'radial-gradient(ellipse 74% 84% at 50% 48%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.8) 56%, rgba(255,255,255,0.34) 80%, rgba(255,255,255,0) 100%)'
+    const isTouch =
+      window.matchMedia('(hover: none), (pointer: coarse)').matches ||
+      navigator.maxTouchPoints > 0
     const emptyMask = 'radial-gradient(circle, transparent 0%, transparent 100%)'
+
+    const buildTouchBaseline = (now) => {
+      // Gentle drift/pulse so the portrait keeps a liquid feel between ripples.
+      const driftX = 50 + Math.sin(now * 0.0007) * 3.5
+      const driftY = 48 + Math.cos(now * 0.0009) * 2.5
+      const pulse = 0.76 + Math.sin(now * 0.0011) * 0.05
+      return `radial-gradient(ellipse 78% 86% at ${driftX.toFixed(2)}% ${driftY.toFixed(2)}%, rgba(255,255,255,${pulse.toFixed(3)}) 0%, rgba(255,255,255,${(pulse * 0.72).toFixed(3)}) 52%, rgba(255,255,255,${(pulse * 0.28).toFixed(3)}) 78%, rgba(255,255,255,0) 100%)`
+    }
 
     const spawnBlob = (x, y, options = {}) => {
       blobsRef.current.push({
@@ -179,7 +187,7 @@ export default function LiquidPortrait() {
 
       // On touch devices the baseline keeps part of the portrait visible at
       // all times; the ripples simply reveal more of it as they pass through.
-      const gradients = isTouch ? [touchBaseline] : []
+      const gradients = isTouch ? [buildTouchBaseline(performance.now())] : []
 
       for (const blob of blobsRef.current) {
         const x = blob.x * width
@@ -206,19 +214,19 @@ export default function LiquidPortrait() {
       if (isTouch) {
         // Touch has no hover, so keep a slow ambient ripple going while the
         // portrait is on screen. The baseline mask keeps it from vanishing.
-        if (inViewRef.current && now - idleSpawnRef.current > 2100 + Math.random() * 1200) {
+        if (now - idleSpawnRef.current > 1500 + Math.random() * 900) {
           const centerX = Math.random() * 0.7 + 0.15
           const centerY = Math.random() * 0.7 + 0.15
-          const dropletCount = 3 + Math.floor(Math.random() * 3)
+          const dropletCount = 4 + Math.floor(Math.random() * 3)
           for (let index = 0; index < dropletCount; index += 1) {
             const angle = (index / dropletCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.7
-            const ring = 0.03 + (index % 3) * 0.035 + Math.random() * 0.02
+            const ring = 0.035 + (index % 3) * 0.04 + Math.random() * 0.02
             spawnBlob(
               Math.min(0.96, Math.max(0.04, centerX + Math.cos(angle) * ring)),
               Math.min(0.96, Math.max(0.04, centerY + Math.sin(angle) * ring)),
               {
-                maxR: 0.14 + Math.random() * 0.07,
-                life: 1.4,
+                maxR: 0.17 + Math.random() * 0.09,
+                life: 1.5,
               },
             )
           }

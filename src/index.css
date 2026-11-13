@@ -71,9 +71,14 @@ h1, h2, h3, p { margin-top: 0; }
 .hero .liquid-portrait { grid-column: 1 / -1; width: min(100%, 1080px); margin: 38px auto 0; }
 .liquid-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform, mask-image; transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateZ(0px); transform-origin: center center; mask-image: radial-gradient(circle, transparent 0%, transparent 100%); -webkit-mask-image: radial-gradient(circle, transparent 0%, transparent 100%); mask-composite: add; -webkit-mask-composite: source-over; }
 
-/* Touch devices have no hover, so keep the portrait fully visible. */
+/* Touch devices have no hover: keep a minimum reveal so the portrait never vanishes. */
 @media (hover: none), (pointer: coarse) {
-  .liquid-portrait img { mask-image: none; -webkit-mask-image: none; transform: none; will-change: auto; }
+  .liquid-portrait img {
+    mask-image: radial-gradient(ellipse 78% 86% at 50% 48%, rgba(255,255,255,.76) 0%, rgba(255,255,255,.55) 52%, rgba(255,255,255,.21) 78%, rgba(255,255,255,0) 100%);
+    -webkit-mask-image: radial-gradient(ellipse 78% 86% at 50% 48%, rgba(255,255,255,.76) 0%, rgba(255,255,255,.55) 52%, rgba(255,255,255,.21) 78%, rgba(255,255,255,0) 100%);
+    transform: none;
+    will-change: auto;
+  }
 }
 .hero-scene canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .scene-orbit { position: absolute; left: 50%; top: 50%; width: 76%; aspect-ratio: 1; border: 1px solid rgba(214,214,214,.15); border-radius: 50%; transform: translate(-50%,-50%) rotate(-25deg) scaleY(.42); pointer-events: none; }
