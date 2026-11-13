@@ -29,7 +29,7 @@ export default function LiquidPortrait() {
     // Touch devices have no hover, so keep the portrait fully exposed.
     if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
       image.style.maskImage = 'none'
-      image.style.webkitMaskImage = 'none'
+      image.style.WebkitMaskImage = 'none'
       image.style.transform = 'none'
       return
     }
@@ -160,7 +160,7 @@ export default function LiquidPortrait() {
 
       if ((!pointer.active && !autoActiveRef.current) || blobsRef.current.length === 0) {
         image.style.maskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
-        image.style.webkitMaskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
+        image.style.WebkitMaskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
         return
       }
 
@@ -176,7 +176,7 @@ export default function LiquidPortrait() {
         .join(', ')
 
       image.style.maskImage = mask
-      image.style.webkitMaskImage = mask
+      image.style.WebkitMaskImage = mask
     }
 
     const animate = () => {
