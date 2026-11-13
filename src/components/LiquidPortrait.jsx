@@ -26,6 +26,14 @@ export default function LiquidPortrait() {
     const image = imageRef.current
     if (!root || !image) return
 
+    // Touch devices have no hover, so keep the portrait fully exposed.
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
+      image.style.maskImage = 'none'
+      image.style.webkitMaskImage = 'none'
+      image.style.transform = 'none'
+      return
+    }
+
     const spawnBlob = (x, y, options = {}) => {
       blobsRef.current.push({
         x,
