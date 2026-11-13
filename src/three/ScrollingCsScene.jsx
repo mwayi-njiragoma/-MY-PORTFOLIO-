@@ -28,15 +28,21 @@ function Scene() {
 
   useWindowScrollProgress()
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (reduceMotion || !group.current) return
     const t = state.clock.elapsedTime
     const s = scrollState.value
+    const ease = 1 - Math.exp(-delta * 2.4)
 
-    group.current.rotation.y = t * 0.06 + s * Math.PI * 0.65
-    group.current.rotation.x = Math.sin(t * 0.22) * 0.1 + s * 0.25
-    group.current.position.y = (0.5 - s) * 1.9
-    group.current.position.x = Math.sin(t * 0.15) * 0.12
+    const targetRotationY = t * 0.06 + s * Math.PI * 0.65
+    const targetRotationX = Math.sin(t * 0.22) * 0.1 + s * 0.25
+    const targetY = (0.5 - s) * 1.9
+    const targetX = Math.sin(t * 0.15) * 0.12
+
+    group.current.rotation.y += (targetRotationY - group.current.rotation.y) * ease
+    group.current.rotation.x += (targetRotationX - group.current.rotation.x) * ease
+    group.current.position.y += (targetY - group.current.position.y) * ease
+    group.current.position.x += (targetX - group.current.position.x) * ease
   })
 
   const objects = useMemo(

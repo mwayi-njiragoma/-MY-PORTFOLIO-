@@ -1,4 +1,6 @@
 import Navbar from './components/Navbar.jsx'
+import WaterCursor from './components/WaterCursor.jsx'
+import WaterMotion from './components/WaterMotion.jsx'
 import Hero from './sections/Hero.jsx'
 import ScrollingCsScene from './three/ScrollingCsScene.jsx'
 import About from './sections/About.jsx'
@@ -14,6 +16,8 @@ export default function App() {
       <div className="ambient ambient--one" />
       <div className="ambient ambient--two" />
       <ScrollingCsScene />
+      <WaterCursor />
+      <WaterMotion />
       <Navbar />
       <main>
         <Hero />
