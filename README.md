@@ -32,3 +32,5 @@ The project and design sections now render each project's `image` field. The CSS
 1. Push the project to the `main` branch.
 2. In GitHub, open **Settings → Pages** and set **Source** to **GitHub Actions**.
 3. The workflow in `.github/workflows/deploy.yml` builds the site and publishes `dist`.
+
+The production base path is `/MN.mwayinjiragoma/` in `vite.config.js`. Update it if the repository name changes again.
