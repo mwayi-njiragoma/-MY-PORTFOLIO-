@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Text } from '@react-three/drei'
+import { Float } from '@react-three/drei'
 import { useRef, useEffect, useMemo } from 'react'
 
 const scrollState = { value: 0 }
@@ -104,36 +104,20 @@ function Scene() {
         </mesh>
       </Float>
 
-      <Text
-        position={[-2.9, -0.2, 0.2]}
-        fontSize={0.58}
-        color="#D6D6D6"
-        anchorX="center"
-        anchorY="middle"
-        fillOpacity={0.24}
-      >
-        {'</>'}
-      </Text>
-      <Text
-        position={[2.7, 0.95, -0.4]}
-        fontSize={0.62}
-        color="#898A8C"
-        anchorX="center"
-        anchorY="middle"
-        fillOpacity={0.24}
-      >
-        {'{}'}
-      </Text>
-      <Text
-        position={[0.2, -2.0, 0.1]}
-        fontSize={0.42}
-        color="#D6D6D6"
-        anchorX="center"
-        anchorY="middle"
-        fillOpacity={0.18}
-      >
-        0101
-      </Text>
+      <Float speed={1.3} rotationIntensity={0.3} floatIntensity={0.65}>
+        <group position={[-2.7, -0.25, 0]}>
+          {[0, 1, 2, 3, 4].map((index) => (
+            <mesh key={index} position={[index * 0.16, 0, 0]}>
+              <boxGeometry args={[0.075, 0.075, 0.075]} />
+              <meshStandardMaterial
+                color={index % 2 === 0 ? '#D6D6D6' : '#898A8C'}
+                transparent
+                opacity={0.3}
+              />
+            </mesh>
+          ))}
+        </group>
+      </Float>
 
       {objects.map((object, index) => (
         <Float
