@@ -37,7 +37,7 @@ export default function LiquidPortrait() {
       // Gentle drift/pulse so the portrait keeps a liquid feel between ripples.
       const driftX = 50 + Math.sin(now * 0.0007) * 3.5
       const driftY = 48 + Math.cos(now * 0.0009) * 2.5
-      const pulse = 0.76 + Math.sin(now * 0.0011) * 0.05
+      const pulse = 0.62 + Math.sin(now * 0.0011) * 0.05
       return `radial-gradient(ellipse 78% 86% at ${driftX.toFixed(2)}% ${driftY.toFixed(2)}%, rgba(255,255,255,${pulse.toFixed(3)}) 0%, rgba(255,255,255,${(pulse * 0.72).toFixed(3)}) 52%, rgba(255,255,255,${(pulse * 0.28).toFixed(3)}) 78%, rgba(255,255,255,0) 100%)`
     }
 
@@ -121,7 +121,7 @@ export default function LiquidPortrait() {
       pointer.lastMove = performance.now()
       lastInteractionRef.current = performance.now()
       pointer.prev = null
-      spawnBlob(pointer.x, pointer.y, { maxR: 0.26, life: 1.5 })
+      spawnBlob(pointer.x, pointer.y, { maxR: 0.28, life: 1.8 })
     }
 
     root.addEventListener('pointerenter', onPointerEnter, { passive: true })
@@ -194,10 +194,19 @@ export default function LiquidPortrait() {
         const y = blob.y * height
         const radius = Math.max(4, blob.radius * Math.min(width, height))
         const alpha = Math.max(0, Math.min(1, blob.life))
-        const innerAlpha = (alpha * 0.42).toFixed(3)
-        gradients.push(
-          `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(255,255,255,${alpha.toFixed(3)}) 0%, rgba(255,255,255,${innerAlpha}) 46%, rgba(255,255,255,0) 100%)`,
-        )
+        if (isTouch) {
+          // Fuller, more opaque ripple cores on touch devices.
+          const midAlpha = (alpha * 0.88).toFixed(3)
+          const outerAlpha = (alpha * 0.5).toFixed(3)
+          gradients.push(
+            `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(255,255,255,${alpha.toFixed(3)}) 0%, rgba(255,255,255,${midAlpha}) 42%, rgba(255,255,255,${outerAlpha}) 72%, rgba(255,255,255,0) 100%)`,
+          )
+        } else {
+          const innerAlpha = (alpha * 0.42).toFixed(3)
+          gradients.push(
+            `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(255,255,255,${alpha.toFixed(3)}) 0%, rgba(255,255,255,${innerAlpha}) 46%, rgba(255,255,255,0) 100%)`,
+          )
+        }
       }
 
       const mask = gradients.join(', ')
@@ -225,8 +234,8 @@ export default function LiquidPortrait() {
               Math.min(0.96, Math.max(0.04, centerX + Math.cos(angle) * ring)),
               Math.min(0.96, Math.max(0.04, centerY + Math.sin(angle) * ring)),
               {
-                maxR: 0.17 + Math.random() * 0.09,
-                life: 1.5,
+                maxR: 0.18 + Math.random() * 0.1,
+                life: 1.7,
               },
             )
           }
