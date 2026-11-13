@@ -26,13 +26,12 @@ export default function LiquidPortrait() {
     const image = imageRef.current
     if (!root || !image) return
 
-    // Touch devices have no hover, so keep the portrait fully exposed.
-    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
-      image.style.maskImage = 'none'
-      image.style.WebkitMaskImage = 'none'
-      image.style.transform = 'none'
-      return
-    }
+    // Touch devices have no hover. They still get the liquid ripples, but a
+    // permanent soft reveal keeps the portrait from ever fully vanishing.
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches
+    const touchBaseline =
+      'radial-gradient(ellipse 74% 84% at 50% 48%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.8) 56%, rgba(255,255,255,0.34) 80%, rgba(255,255,255,0) 100%)'
+    const emptyMask = 'radial-gradient(circle, transparent 0%, transparent 100%)'
 
     const spawnBlob = (x, y, options = {}) => {
       blobsRef.current.push({
@@ -105,9 +104,22 @@ export default function LiquidPortrait() {
       pointer.prev = null
     }
 
+    const onPointerDown = (event) => {
+      const rect = root.getBoundingClientRect()
+      const pointer = pointerRef.current
+      pointer.x = (event.clientX - rect.left) / rect.width
+      pointer.y = (event.clientY - rect.top) / rect.height
+      pointer.active = true
+      pointer.lastMove = performance.now()
+      lastInteractionRef.current = performance.now()
+      pointer.prev = null
+      spawnBlob(pointer.x, pointer.y, { maxR: 0.26, life: 1.5 })
+    }
+
     root.addEventListener('pointerenter', onPointerEnter, { passive: true })
     root.addEventListener('pointermove', onPointerMove, { passive: true })
     root.addEventListener('pointerleave', onPointerLeave, { passive: true })
+    root.addEventListener('pointerdown', onPointerDown, { passive: true })
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -158,23 +170,29 @@ export default function LiquidPortrait() {
         })
         .filter((blob) => blob.life > 0.01 && blob.radius > 0.004)
 
-      if ((!pointer.active && !autoActiveRef.current) || blobsRef.current.length === 0) {
-        image.style.maskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
-        image.style.WebkitMaskImage = 'radial-gradient(circle, transparent 0%, transparent 100%)'
+      const hasInteraction = pointer.active || autoActiveRef.current
+      if (!isTouch && (!hasInteraction || blobsRef.current.length === 0)) {
+        image.style.maskImage = emptyMask
+        image.style.WebkitMaskImage = emptyMask
         return
       }
 
-      const mask = blobsRef.current
-        .map((blob) => {
-          const x = blob.x * width
-          const y = blob.y * height
-          const radius = Math.max(4, blob.radius * Math.min(width, height))
-          const alpha = Math.max(0, Math.min(1, blob.life))
-          const innerAlpha = (alpha * 0.42).toFixed(3)
-          return `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(255,255,255,${alpha.toFixed(3)}) 0%, rgba(255,255,255,${innerAlpha}) 46%, rgba(255,255,255,0) 100%)`
-        })
-        .join(', ')
+      // On touch devices the baseline keeps part of the portrait visible at
+      // all times; the ripples simply reveal more of it as they pass through.
+      const gradients = isTouch ? [touchBaseline] : []
 
+      for (const blob of blobsRef.current) {
+        const x = blob.x * width
+        const y = blob.y * height
+        const radius = Math.max(4, blob.radius * Math.min(width, height))
+        const alpha = Math.max(0, Math.min(1, blob.life))
+        const innerAlpha = (alpha * 0.42).toFixed(3)
+        gradients.push(
+          `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(255,255,255,${alpha.toFixed(3)}) 0%, rgba(255,255,255,${innerAlpha}) 46%, rgba(255,255,255,0) 100%)`,
+        )
+      }
+
+      const mask = gradients.join(', ')
       image.style.maskImage = mask
       image.style.WebkitMaskImage = mask
     }
@@ -183,9 +201,31 @@ export default function LiquidPortrait() {
       const pointer = pointerRef.current
       const now = performance.now()
 
-      // Occasional ripple/droplet bursts while interacting or scrolling, exposing the portrait.
       const hasInteraction = pointer.active || autoActiveRef.current
-      if (hasInteraction && now - lastInteractionRef.current > 180) {
+
+      if (isTouch) {
+        // Touch has no hover, so keep a slow ambient ripple going while the
+        // portrait is on screen. The baseline mask keeps it from vanishing.
+        if (inViewRef.current && now - idleSpawnRef.current > 2100 + Math.random() * 1200) {
+          const centerX = Math.random() * 0.7 + 0.15
+          const centerY = Math.random() * 0.7 + 0.15
+          const dropletCount = 3 + Math.floor(Math.random() * 3)
+          for (let index = 0; index < dropletCount; index += 1) {
+            const angle = (index / dropletCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.7
+            const ring = 0.03 + (index % 3) * 0.035 + Math.random() * 0.02
+            spawnBlob(
+              Math.min(0.96, Math.max(0.04, centerX + Math.cos(angle) * ring)),
+              Math.min(0.96, Math.max(0.04, centerY + Math.sin(angle) * ring)),
+              {
+                maxR: 0.14 + Math.random() * 0.07,
+                life: 1.4,
+              },
+            )
+          }
+          idleSpawnRef.current = now
+        }
+      } else if (hasInteraction && now - lastInteractionRef.current > 180) {
+        // Occasional ripple/droplet bursts while interacting or scrolling.
         if (now - idleSpawnRef.current > 900 + Math.random() * 500) {
           const centerX = Math.random() * 0.76 + 0.12
           const centerY = Math.random() * 0.76 + 0.12
@@ -206,8 +246,10 @@ export default function LiquidPortrait() {
         }
       }
 
-      // Small 3D tilt follows the cursor.
-      if (pointer.active) {
+      // Small 3D tilt follows the cursor on hover-capable devices.
+      if (isTouch) {
+        image.style.transform = 'none'
+      } else if (pointer.active) {
         const tiltY = (pointer.x - 0.5) * 15
         const tiltX = (0.5 - pointer.y) * 15
         image.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.045) translateZ(0px)`
@@ -229,6 +271,7 @@ export default function LiquidPortrait() {
       root.removeEventListener('pointerenter', onPointerEnter)
       root.removeEventListener('pointermove', onPointerMove)
       root.removeEventListener('pointerleave', onPointerLeave)
+      root.removeEventListener('pointerdown', onPointerDown)
     }
   }, [])
 
