@@ -35,9 +35,9 @@ Project images are loaded from these folders:
 
 The project and design sections now render each project's `image` field. The CSS gradients remain as fallbacks when an image is missing.
 
-## Deployment
-Import the repository into Vercel or Netlify and use:
-- Build command: `npm run build`
-- Output directory: `dist`
+## Deploying to GitHub Pages
+1. Push the project to the `main` branch.
+2. In GitHub, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+3. The workflow in `.github/workflows/deploy.yml` builds the site and publishes `dist`.
 
 No backend is required for the static portfolio. The contact form currently opens the visitor's email application through a `mailto:` link; configure a form service if you need in-page message delivery.

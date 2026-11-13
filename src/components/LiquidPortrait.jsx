@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 
-const IMAGE_SRC = '/Contemplative%20Portrait%20in%20Blue%20Track%20Jacket.png'
+const IMAGE_SRC = `${import.meta.env.BASE_URL}Contemplative%20Portrait%20in%20Blue%20Track%20Jacket.png`
 
 export default function LiquidPortrait() {
   const rootRef = useRef(null)

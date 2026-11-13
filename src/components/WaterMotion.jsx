@@ -15,7 +15,7 @@ const DAMPING = 19
 
 export default function WaterMotion() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse)').matches) return
 
     const states = new Map()
     let activeElement = null

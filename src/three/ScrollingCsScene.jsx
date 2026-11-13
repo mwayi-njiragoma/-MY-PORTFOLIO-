@@ -144,8 +144,11 @@ export default function ScrollingCsScene() {
   const reduceMotion =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const isSmallScreen =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(max-width: 760px)').matches
 
-  if (reduceMotion) return null
+  if (reduceMotion || isSmallScreen) return null
 
   return (
     <div
